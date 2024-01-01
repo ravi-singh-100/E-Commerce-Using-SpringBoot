@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartData {
-    static List<Product> products;
+    public static List<Product> products;
     static {
         products=new ArrayList<>();
     }

@@ -76,8 +76,8 @@ public class User {
         this.roles = roles;
     }
 
-    @NotEmpty
-    @Column(nullable = false)
+//    @NotEmpty
+//    @Column(nullable = false)
     private String lastName;
     @NotEmpty
     @Column(nullable = false,unique = true)

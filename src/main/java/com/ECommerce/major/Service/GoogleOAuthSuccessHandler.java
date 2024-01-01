@@ -6,6 +6,7 @@ import com.ECommerce.major.Repository.RoleRepo;
 import com.ECommerce.major.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -35,12 +36,14 @@ public class GoogleOAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        OAuth2User user=(OAuth2User) authentication.getPrincipal();
-        if(!userRepo.findByEmail(user.getAttribute("email").toString()).isPresent()){
+       OAuth2AuthenticationToken token=( OAuth2AuthenticationToken ) authentication;
+       String email=token.getPrincipal().getAttribute("email");
+       System.out.println(" --------- > "+token.getPrincipal().getAttribute("email")+"-------- >"+token.getPrincipal().getAttribute("family_name"));
+        if(!userRepo.findByEmail(email).isPresent()){
             User u =new User();
-            u.setEmail(user.getAttribute("email").toString());
-            u.setFirstName(user.getAttribute("given_name"));
-            u.setLastName(user.getAttribute("family_user"));
+            u.setEmail(token.getPrincipal().getAttribute("email"));
+            u.setFirstName(token.getPrincipal().getAttribute("given_name"));
+            u.setLastName(token.getPrincipal().getAttribute("family_name"));
             List<Role>roles=new ArrayList<>();
             roles.add(roleRepo.findById(2).get());
             u.setRoles(roles);
