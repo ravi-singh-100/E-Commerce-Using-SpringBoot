@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class UserCustomerDetail extends User implements UserDetails {
-    UserCustomerDetail(User user){
+    public UserCustomerDetail(User user){
         super(user);
     }
     @Override

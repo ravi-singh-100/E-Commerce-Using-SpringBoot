@@ -24,6 +24,9 @@ public class User {
         this.password = user.password;
         this.roles = user.roles;
     }
+    public User (){
+
+    }
 
     public int getId() {
         return id;
@@ -80,10 +83,14 @@ public class User {
     @Column(nullable = false,unique = true)
     @Email
     private String email;
-    @NotEmpty
-    @Column(nullable = false)
+
     private String password;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = {@JoinColumn(name = "USER_ID",referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID",referencedColumnName = "ID")}
+    )
     @JsonIgnoreProperties(value = "users")
     private List<Role> roles;
 }
